@@ -1,4 +1,8 @@
 $(function() {
+    $('#datepicker').datepicker({
+        uiLibrary: 'bootstrap5'
+    });
+
     setItemPerPageEvents();
     updateItemPerPage(5);
 });
@@ -48,10 +52,11 @@ function updatePaginator(pageNumber) {
 }
 
 function updateDataTable(pageNumber, pageSize) {
-    $("#accounts_table_body")[0].innerText = "";
+    let tableBody = $("#accounts_table_body")[0];
+    tableBody.innerText = "";
     $.getJSON("/rest/players", {pageNumber: pageNumber, pageSize: pageSize}, function(data) {
         $.each(data, function(index, element) {
-            let row = $("#accounts_table_body")[0].insertRow();
+            let row = tableBody.insertRow();
             row.id = "player_" + element.id;
             row.insertCell().innerHTML = element.id;
             row.insertCell().innerHTML = element.name;
@@ -188,6 +193,48 @@ function saveItem(id) {
             updatePaginator();
         }
     });
+}
+
+function createItem() {
+
+
+    let name = $("#new_account_name")[0];
+    let title = $("#new_account_title")[0];
+    let race = $("#new_account_race")[0];
+    let profession = $("#new_account_profession")[0];
+    let birthday = $("#new_account_birthday")[0];
+    let banned = $("#new_account_banned")[0];
+    let level = $("#new_account_level")[0];
+
+    let json = JSON.stringify({
+        name: name.value,
+        title: title.value,
+        race: race.value,
+        profession: profession.value,
+        birthday: Date.parse(birthday.value),
+        banned: banned.value,
+        level: level.value
+    });
+
+    $.ajax({
+        url: '/rest/players/',
+        type: 'POST',
+        data: json,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        async: false,
+        success: function() {
+            updatePaginator();
+            name.value = "";
+            title.value = "";
+            race.value = "HUMAN";
+            profession.value = "WARRIOR";
+            birthday.value = "";
+            banned.value = "false";
+            level.value = "";
+        }
+    });
+
 }
 
 

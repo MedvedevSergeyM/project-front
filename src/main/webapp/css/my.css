@@ -1,0 +1,25 @@
+body {
+    margin: 80px !important;
+    justify-content: center;
+    background-color: white;
+}
+
+h1 {
+    text-align: center;
+}
+
+.input-group-append {
+    cursor: pointer;
+}
+
+i.fa.fa-calendar {
+    padding: 4px;
+}
+.datepicker td,th {
+    text-align: center;
+    padding: 8px 12px;
+    font-size: 14px;
+}
+.datepicker {
+    border: 1px solid black;
+}
